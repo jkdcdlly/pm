@@ -22,12 +22,13 @@
 		<shiro:hasPermission name="oa:travelQpsUrl:edit"><li><a href="${ctx}/oa/travelQpsUrl/form">旅游qps添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="travelQpsUrl" action="${ctx}/oa/travelQpsUrl/" method="post" class="breadcrumb form-search">
-		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
-		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-		<ul class="ul-form">
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
-			<li class="clearfix"></li>
-		</ul>
+		<div>
+			<label>日期：</label> <input id="beginDate" name="date" type="text"
+				readonly="readonly" maxlength="20" class="input-medium Wdate"
+				style="width: 163px;" value="${vo.date}"
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> <input
+				id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
+		</div>
 	</form:form>
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="height:400px"></div>
