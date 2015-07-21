@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.oa.dao.TravelQpsServeripDao">
+
+	<sql id="travelQpsServeripColumns">
+		a.id AS "id",
+		a.serverip AS "serverip",
+		a.pv AS "pv",
+		a.time
+		AS "time",
+		a.date AS "date"
+	</sql>
+
+	<sql id="travelQpsServeripJoins">
+	</sql>
+
+	<select id="get" resultType="TravelQpsServerip">
+		SELECT
+		<include refid="travelQpsServeripColumns" />
+		FROM travel_qps_serverip a
+		<include refid="travelQpsServeripJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<!-- <select id="findList" resultType="TravelQpsServerip"> -->
+	<!-- SELECT -->
+	<!-- <include refid="travelQpsServeripColumns"/> -->
+	<!-- FROM travel_qps_serverip a -->
+	<!-- <include refid="travelQpsServeripJoins"/> -->
+	<!-- <where> -->
+
+	<!-- </where> -->
+	<!-- <choose> -->
+	<!-- <when test="page !=null and page.orderBy != null and page.orderBy != 
+		''"> -->
+	<!-- ORDER BY ${page.orderBy} -->
+	<!-- </when> -->
+	<!-- <otherwise> -->
+	<!-- </otherwise> -->
+	<!-- </choose> -->
+	<!-- </select> -->
+
+	<select id="findList" resultType="TravelQpsServerip">
+	SELECT substring(req_time,1,13) as time,sum(num) as pv FROM travel_customer_access 
+	WHERE req_date = #{date}  
+	group by substring(req_time,1,13);
+<!-- 		SELECT  
+		     a.time_point as time,if(b.num is null,0,b.num) as pv 
+		FROM (SELECT time_point,sec FROM time_point WHERE sec%600=0) a 
+LEFT JOIN (
+		           SELECT 
+		                 FLOOR((UNIX_TIMESTAMP(time) -UNIX_TIMESTAMP(#{date}))/600)*600 as sec,sum(pv) as num
+                   FROM travel_qps_serverip 
+                   
+                   GROUP BY FLOOR((UNIX_TIMESTAMP(time) -UNIX_TIMESTAMP(#{date}))/600)*600
+                  ) b on a.sec=b.sec-->
+	</select>
+	
+	
+	
+<select id="lineChart" resultType="TravelQpsServerip">
+		SELECT req_time as time,sum(num) as pv FROM travel_customer_access 
+	WHERE req_date = #{date}  
+	group by req_time;
+	</select>
+
+
+	<select id="pieList" resultType="TravelQpsServerip">
+		SELECT 
+			serverIP,sum(pv) as pv 
+		FROM 
+		    travel_qps_serverip 
+		where 
+		     date = #{date}  
+		GROUP BY serverIP 
+		ORDER BY pv DESC
+		LIMIT 10;
+	</select>
+
+
+
+	<select id="findAllList" resultType="TravelQpsServerip">
+		SELECT
+		<include refid="travelQpsServeripColumns" />
+		FROM travel_qps_serverip a
+		<include refid="travelQpsServeripJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO travel_qps_serverip(
+		id,
+		serverip,
+		pv,
+		time,
+		date
+		) VALUES (
+		#{id},
+		#{serverip},
+		#{pv},
+		#{time},
+		#{date}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE travel_qps_serverip SET
+		serverip = #{serverip},
+		pv = #{pv},
+		time = #{time},
+		date = #{date}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM travel_qps_serverip
+		WHERE id = #{id}
+	</update>
+
+</mapper>

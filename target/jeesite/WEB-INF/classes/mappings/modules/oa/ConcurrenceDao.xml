@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.oa.dao.ConcurrenceDao">
+
+	<sql id="concurrenceColumns">
+		a.id AS "id",
+		a.time AS "time",
+		a.num AS "num",
+		a.in_date AS
+		"inDate",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks
+		AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="concurrenceJoins">
+	</sql>
+
+	<select id="get" resultType="Concurrence">
+		SELECT
+		<include refid="concurrenceColumns" />
+		FROM CONCURRENCE a
+		<include refid="concurrenceJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+<!-- 	<select id="findList" resultType="Concurrence"> -->
+<!-- 		SELECT -->
+<!-- 		<include refid="concurrenceColumns" /> -->
+<!-- 		FROM CONCURRENCE a -->
+<!-- 		<include refid="concurrenceJoins" /> -->
+<!-- 		<where> -->
+<!-- 			a.del_flag = #{DEL_FLAG_NORMAL} -->
+<!-- 		</where> -->
+<!-- 		<choose> -->
+<!-- 			<when test="page !=null and page.orderBy != null and page.orderBy != ''"> -->
+<!-- 				ORDER BY ${page.orderBy} -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				ORDER BY a.update_date DESC -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+<!-- 	</select> -->
+
+	<select id="findList" resultType="Concurrence">
+		SELECT 
+		date(if(b.time is null,now(),b.time))as inDate,
+		time_point as time,sum(if(num is null,0,num)) as num
+		FROM time_point a LEFT JOIN TRAVEL_QPS_URL b ON a.sec=update_by AND create_date=date(now()) 
+		group by inDate,time_point
+		union all
+		SELECT 
+		date(if(b.time is null,adddate(now(),-1),b.time))as inDate,
+		time_point as time,sum(if(num is null,0,num)) as num
+		FROM time_point a LEFT JOIN TRAVEL_QPS_URL b ON a.sec=update_by AND create_date=date(adddate(now(),-1))
+		group by inDate,time_point
+	</select>
+
+<!-- 	<select id="findAllList" resultType="Concurrence"> -->
+<!-- 		SELECT -->
+<!-- 		<include refid="concurrenceColumns" /> -->
+<!-- 		FROM CONCURRENCE a -->
+<!-- 		<include refid="concurrenceJoins" /> -->
+<!-- 		<where> -->
+<!-- 			a.del_flag = #{DEL_FLAG_NORMAL} -->
+<!-- 		</where> -->
+<!-- 		<choose> -->
+<!-- 			<when test="page !=null and page.orderBy != null and page.orderBy != ''"> -->
+<!-- 				ORDER BY ${page.orderBy} -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				ORDER BY a.update_date DESC -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+<!-- 	</select> -->
+	<select id="findAllList" resultType="Concurrence">
+	SELECT request_url,sum(num) as num FROM TRAVEL_QPS_URL 
+	WHERE FLOOR(UNIX_TIMESTAMP(time)/300)=FLOOR((UNIX_TIMESTAMP('2015-07-07 08:10:10')-300)/300)
+	GROUP BY request_url
+	ORDER BY SUM(num) desc limit 10
+	</select>
+
+
+	<insert id="insert">
+		INSERT INTO CONCURRENCE(
+		id,
+		time,
+		num,
+		in_date,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{time},
+		#{num},
+		#{inDate},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE CONCURRENCE SET
+		time = #{time},
+		num = #{num},
+		in_date = #{inDate},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE CONCURRENCE SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>
