@@ -17,6 +17,17 @@ import com.thinkgem.jeesite.modules.oa.entity.OdsNginxTourism;
  */
 @MyBatisDao
 public interface OdsNginxTourismDao extends CrudDao<OdsNginxTourism> {
+	/**
+	 * 
+	 * @param odsNginxTourism
+	 * @return
+	 */
 	public List<OdsNginxTourism> findListByApp(OdsNginxTourism odsNginxTourism);
 
+	/**
+	 * 查询所有应用名称
+	 * 
+	 * @return
+	 */
+	public List<String> findAppList(OdsNginxTourism odsNginxTourism);
 }

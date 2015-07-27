@@ -13,7 +13,16 @@
 
 <body>
     <form:form id="searchForm" modelAttribute="odsNginxTourism" action="${ctx}/oa/odsNginxTourism/form" method="post" class="breadcrumb form-search">
+    	<div class="control-group">
+			<label class="control-label">应用：</label>
+			<div class="controls">
+				<form:select path="leaveType" >
+					<form:options items="${appNameList}" itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select>
+			</div>
+		</div>
 		<ul class="ul-form">
+			<li><label>应用名：</label><input name="appName" /></li>		
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>

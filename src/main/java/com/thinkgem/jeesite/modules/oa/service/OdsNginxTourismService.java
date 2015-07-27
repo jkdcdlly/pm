@@ -42,6 +42,10 @@ public class OdsNginxTourismService extends CrudService<OdsNginxTourismDao, OdsN
 		return odsNginxTourismDao.findListByApp(odsNginxTourism);
 	}
 
+	public List<String> findAppList(OdsNginxTourism odsNginxTourism) {
+		return odsNginxTourismDao.findAppList(odsNginxTourism);
+	}
+
 	@Transactional(readOnly = false)
 	public void save(OdsNginxTourism odsNginxTourism) {
 		super.save(odsNginxTourism);
