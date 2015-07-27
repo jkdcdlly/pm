@@ -100,7 +100,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_b2b",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([new Date(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart.setOption(option); 	
@@ -117,7 +117,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([new Date(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart.setOption(option); 	
@@ -134,7 +134,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_crm",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([new Date(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart.setOption(option); 	
