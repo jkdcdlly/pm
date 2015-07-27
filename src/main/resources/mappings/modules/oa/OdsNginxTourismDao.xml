@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.oa.dao.OdsNginxTourismDao">
+    
+	<sql id="odsNginxTourismColumns">
+		a.app_name AS "appName",
+		a.server_ip AS "serverIp",
+		a.req_time AS "reqTime",
+		a.http_status AS "httpStatus",
+		a.req_url_path AS "reqUrlPath",
+		a.counts AS "counts",
+		a.resp_time AS "respTime",
+		a.size AS "size",
+		a.req_date AS "reqDate"
+	</sql>
+	
+	<sql id="odsNginxTourismJoins">
+	</sql>
+    
+	<select id="get" resultType="OdsNginxTourism">
+		SELECT 
+			<include refid="odsNginxTourismColumns"/>
+		FROM ods_nginx_tourism a
+		<include refid="odsNginxTourismJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OdsNginxTourism">
+		SELECT 
+			<include refid="odsNginxTourismColumns"/>
+		FROM ods_nginx_tourism a
+		<include refid="odsNginxTourismJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findListByApp" resultType="OdsNginxTourism">
+		SELECT concat(#{reqDate},' ',time_point) as req_time,if(b.counts is null,0,b.counts) as counts 
+		FROM (SELECT time_point FROM time_point WHERE sec%600=0) a 
+		left join (SELECT app_name,req_time,sum(counts) as counts FROM ods_nginx_tourism WHERE app_name =#{appName} AND req_date=#{reqDate} GROUP BY app_name,req_time) b 
+		on a.time_point=substr(req_time,12,5)
+		order by req_time
+	</select>
+	
+	<select id="findAllList" resultType="OdsNginxTourism">
+		SELECT 
+			<include refid="odsNginxTourismColumns"/>
+		FROM ods_nginx_tourism a
+		<include refid="odsNginxTourismJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ods_nginx_tourism(
+			app_name,
+			server_ip,
+			req_time,
+			http_status,
+			req_url_path,
+			counts,
+			resp_time,
+			size,
+			req_date
+		) VALUES (
+			#{appName},
+			#{serverIp},
+			#{reqTime},
+			#{httpStatus},
+			#{reqUrlPath},
+			#{counts},
+			#{respTime},
+			#{size},
+			#{reqDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ods_nginx_tourism SET 	
+			app_name = #{appName},
+			server_ip = #{serverIp},
+			req_time = #{reqTime},
+			http_status = #{httpStatus},
+			req_url_path = #{reqUrlPath},
+			counts = #{counts},
+			resp_time = #{respTime},
+			size = #{size},
+			req_date = #{reqDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM ods_nginx_tourism
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

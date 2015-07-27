@@ -12,6 +12,29 @@ function GetTimeStr(millisecond) {
 	return dd.getFullYear() + "-" + (dd.getMonth() + 1) + "-" + dd.getDate() + " " + dd.getHours() + ":" + dd.getMinutes() + ":" + dd.getSeconds();
 }
 
+function timeToString(date) {
+	var str = date.getFullYear() + '-'
+	        + (date.getMonth() + 1) + '-'
+	        + date.getDate() + ' '
+	        + date.getHours() + ':'
+	        + date.getMinutes()
+	return str;
+}
+
+
+function stringToTime(timeStr){
+	var datearr = timeStr.split(' ')[0].split('-');
+	var timearr = timeStr.split(' ')[1].split(':');
+	var d = new Date();
+	d.setFullYear(parseInt(datearr[0]));
+	d.setMonth(parseInt(datearr[1]-1));
+	d.setDate(parseInt(datearr[2]));
+	d.setHours(parseInt(timearr[0]));
+	d.setMinutes(parseInt(timearr[1]));
+	d.setSeconds(0);
+	return d;
+}
+
 function page(n, s) {
 	$("#pageNo").val(n);
 	$("#pageSize").val(s);
