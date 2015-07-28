@@ -18,7 +18,12 @@
 			<label class="control-label">应用名：</label>
 			<select name="appName" style="width:150px">
 				<c:forEach items="${appNameList}" var="appName" varStatus="vs">  
-				 	<option value="${appName}">${appName}</option>  
+				 	<c:if test="${appName==odsNginxTourism.appName}" >
+				 	<option value="${appName}" selected>${appName}</option>
+				 	</c:if>
+					<c:if test="${appName!=odsNginxTourism.appName}" >
+				 	<option value="${appName}">${appName}</option>
+				 	</c:if>
 				</c:forEach>
             </select>  
 			</li>		
@@ -28,7 +33,7 @@
 	</form:form>
 	
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" style="height:400px"></div>
+    <div id="piemain" style="height:400px"></div>
     
     <!-- ECharts单文件引入 -->
     <script src="${ctxStatic}/chart/chart.js" type="text/javascript"></script>
@@ -44,109 +49,85 @@
   require(
           [
               'echarts',
-              'echarts/chart/line' //按需加载图表关于线性图、折线图的部分
+              'echarts/chart/line', //按需加载图表关于线性图、折线图的部分
+              'echarts/chart/pie' //按需加载图表关于线性图、折线图的部分
           ],
-          DrawEChart //异步加载的回调函数绘制图表
+           //异步加载的回调函数绘制图表
+          DrawEChart
           );
+  
+
       function DrawEChart(ec) {
-          // 基于准备好的dom，初始化echarts图表
-          var myChart = ec.init(document.getElementById('main'),'macarons'); 
-          
-          var option = {
-          	    title : {
-          	        text : '时间坐标折线图',
-          	        subtext : 'dataZoom支持'
-          	    },
-          	    tooltip : {
-          	        trigger: 'item',
-          	        formatter : function (params) {
-          	            var date = new Date(params.value[0]);
-          	            return timeToString(date) + '<br/>' + params.value[1] 
-          	        }
-          	    },
-          	    toolbox: {
-          	        show : true,
-          	        feature : {
-          	            mark : {show: true},
-          	            dataView : {show: true, readOnly: false},
-          	            restore : {show: true},
-          	            saveAsImage : {show: true}
-          	        }
-          	    },
-          	    dataZoom: {
-          	        show: true,
-          	        start : 70
-          	    },
-          	    legend : {
-          	        data : ['tourism_b2b','tourism','tourism_crm']
-          	    },
-          	    xAxis : [
-          	             
-          	        {
-          	            type : 'time',
-          	            splitNumber:10
-          	        }
-          	    ],
-          	    yAxis : [
-          	        {
-          	            type : 'value',
-          	            min:0
-          	        }
-          	    ],
-          	    series :  [
-				                 {
-				                     name: 'tourism_b2b',
-				                     type: 'line',
-				                     showAllSymbol: true,
-				                     data:(function(){
-				                 		var arr=[];
-				                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_b2b",
-				                 				function(data) {
-				                 					for (var i = 0; i < data.length; i++) {
-				                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
-				                 						}
-				                 					// 为echarts对象加载数据 
-				                 					myChart.setOption(option); 	
-				                 				})
-				                       return arr;
-				                 })()
-				                },
-				                {
-				                     name: 'tourism',
-				                     type: 'line',
-				                     showAllSymbol: true,
-				                     data:(function(){
-				                 		var arr=[];
-				                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism",
-				                 				function(data) {
-				                 					for (var i = 0; i < data.length; i++) {
-				                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
-				                 						}
-				                 					// 为echarts对象加载数据 
-				                 					myChart.setOption(option); 	
-				                 				})
-				                       return arr;
-				                 })()
-				                },
-				                {
-				                     name: 'tourism_crm',
-				                     type: 'line',
-				                     showAllSymbol: true,
-				                     data:(function(){
-				                 		var arr=[];
-				                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_crm",
-				                 				function(data) {
-				                 					for (var i = 0; i < data.length; i++) {
-				                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
-				                 						}
-				                 					// 为echarts对象加载数据 
-				                 					myChart.setOption(option); 	
-				                 				})
-				                       return arr;
-				                 })()
-				                }
-				             ]
-          	};
+    	  var arr=[];
+    		$.getJSON("findListByserverIP?reqDate=2015-06-30&appName="+$("select[name=appName]").val(),
+    				function(data) {
+    					 // 基于准备好的dom，初始化echarts图表
+    			          var myChart = ec.init(document.getElementById('piemain'),'macarons'); 
+    			          option = {
+    			        		    title : {
+    			        		        text: '某站点用户访问来源',
+    			        		        subtext: '纯属虚构',
+    			        		        x:'center'
+    			        		    },
+    			        		    tooltip : {
+    			        		        trigger: 'item',
+    			        		        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    			        		    },
+    			        		    legend: {
+    			        		        orient : 'vertical',
+    			        		        x : 'left',
+    			        		        data:(function(){
+					                 		var arr=[];
+		                 					for (var i = 0; i < data.length; i++) {
+		                 						     arr.push(data[i].serverIp);	
+		                 						}
+        		            				return arr;
+		                 					})()
+    			        		    },
+    			        		    toolbox: {
+    			        		        show : true,
+    			        		        feature : {
+    			        		            mark : {show: true},
+    			        		            dataView : {show: true, readOnly: false},
+    			        		            magicType : {
+    			        		                show: true, 
+    			        		                type: ['pie', 'funnel'],
+    			        		                option: {
+    			        		                    funnel: {
+    			        		                        x: '25%',
+    			        		                        width: '50%',
+    			        		                        funnelAlign: 'left',
+    			        		                        max: 1548
+    			        		                    }
+    			        		                }
+    			        		            },
+    			        		            restore : {show: true},
+    			        		            saveAsImage : {show: true}
+    			        		        }
+    			        		    },
+    			        		    calculable : true,
+    			        		    series : [
+    			        		        {
+    			        		            name:'访问来源',
+    			        		            type:'pie',
+    			        		            radius : '55%',
+    			        		            center: ['50%', '60%'],
+    			        		            data:(function(){
+    					                 		var arr=[];
+    					                 					for (var i = 0; i < data.length; i++) {
+    					                 						     arr.push({value: data[i].counts,  name:data[i].serverIp});	
+    					                 						}
+    			        		            return arr;
+    					                 })()
+    			        		        }
+    			        		    ]
+    			        		};
+    					// 为echarts对象加载数据 
+    					myChart.setOption(option); 	
+    				})
+    	  
+    	  
+                          
       }
 	</script>
 </body>

@@ -56,6 +56,13 @@
 		order by req_time
 	</select>
 	
+	<select id="findListByserverIP" resultType="OdsNginxTourism">
+		SELECT server_ip,sum(counts) as counts 
+		  FROM ods_nginx_tourism 
+	     WHERE app_name =#{appName} AND req_date=#{reqDate} 
+	     GROUP BY server_ip
+	</select>
+	
 	<select id="findAppList" resultType="String">
 		SELECT 
 		      app_name

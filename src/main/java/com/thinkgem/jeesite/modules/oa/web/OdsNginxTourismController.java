@@ -66,11 +66,19 @@ public class OdsNginxTourismController extends BaseController {
 	}
 
 	@RequiresPermissions("oa:odsNginxTourism:view")
+	@RequestMapping(value = { "findListByserverIP", "" })
+	@ResponseBody
+	public List<OdsNginxTourism> findListByserverIP(OdsNginxTourism odsNginxTourism, HttpServletRequest request, HttpServletResponse response, Model model) {
+		return odsNginxTourismService.findListByserverIP(odsNginxTourism);
+	}
+
+	@RequiresPermissions("oa:odsNginxTourism:view")
 	@RequestMapping(value = "form")
 	public String form(OdsNginxTourism odsNginxTourism, Model model) {
 		if (StringUtils.isBlank(odsNginxTourism.getReqDate()))
 			odsNginxTourism.setReqDate("2015-06-30");
 		model.addAttribute("appNameList", odsNginxTourismService.findAppList(odsNginxTourism));
+		model.addAttribute("odsNginxTourism", odsNginxTourism);
 		return "modules/oa/odsNginxTourismForm";
 	}
 
