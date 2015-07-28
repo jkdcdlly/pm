@@ -3,7 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.oa.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,16 @@ public class OdsNginxTourismService extends CrudService<OdsNginxTourismDao, OdsN
 		return super.findPage(page, odsNginxTourism);
 	}
 
+	@Transactional(readOnly = false)
+	public void save(OdsNginxTourism odsNginxTourism) {
+		super.save(odsNginxTourism);
+	}
+
+	@Transactional(readOnly = false)
+	public void delete(OdsNginxTourism odsNginxTourism) {
+		super.delete(odsNginxTourism);
+	}
+
 	public List<OdsNginxTourism> findListByApp(OdsNginxTourism odsNginxTourism) {
 		return odsNginxTourismDao.findListByApp(odsNginxTourism);
 	}
@@ -50,14 +62,13 @@ public class OdsNginxTourismService extends CrudService<OdsNginxTourismDao, OdsN
 		return odsNginxTourismDao.findListByserverIP(odsNginxTourism);
 	}
 
-	@Transactional(readOnly = false)
-	public void save(OdsNginxTourism odsNginxTourism) {
-		super.save(odsNginxTourism);
+	public Map<String, List<OdsNginxTourism>> findListByserverIPAndReqTime(OdsNginxTourism odsNginxTourism) {
+		Map<String, List<OdsNginxTourism>> map = new HashMap<String, List<OdsNginxTourism>>();
+		List<String> serverIps = odsNginxTourismDao.findserverIPByAppName(odsNginxTourism);
+		for (String serverIp : serverIps) {
+			odsNginxTourism.setServerIp(serverIp);
+			map.put(serverIp, odsNginxTourismDao.findListByserverIPAndReqTime(odsNginxTourism));
+		}
+		return map;
 	}
-
-	@Transactional(readOnly = false)
-	public void delete(OdsNginxTourism odsNginxTourism) {
-		super.delete(odsNginxTourism);
-	}
-
 }

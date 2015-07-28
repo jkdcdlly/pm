@@ -39,4 +39,16 @@ public interface OdsNginxTourismDao extends CrudDao<OdsNginxTourism> {
 	 */
 	public List<OdsNginxTourism> findListByserverIP(OdsNginxTourism odsNginxTourism);
 
+	/**
+	 * 查看应用各服务器访问量
+	 * 
+	 * @param odsNginxTourism
+	 * @return
+	 */
+	public List<OdsNginxTourism> findListByserverIPAndReqTime(OdsNginxTourism odsNginxTourism);
+	
+	
+	public List<String> findserverIPByAppName(OdsNginxTourism odsNginxTourism);
+	
+
 }

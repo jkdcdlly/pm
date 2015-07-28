@@ -47,7 +47,7 @@
 		SELECT concat(#{reqDate},' ',time_point) as req_time,if(b.counts is null,0,b.counts) as counts 
 		FROM (SELECT time_point FROM time_point WHERE sec%600=0) a 
 		left join (SELECT app_name,req_time,sum(counts) as counts FROM ods_nginx_tourism 
-		WHERE app_name =#{appName} AND req_date=#{reqDate}
+		WHERE app_name =#{appName} AND req_date=#{reqDate}  
 		<if test="httpStatus !=null and httpStatus != ''">
 				AND http_status >= 400
 		</if>
@@ -57,11 +57,35 @@
 	</select>
 	
 	<select id="findListByserverIP" resultType="OdsNginxTourism">
-		SELECT server_ip,sum(counts) as counts 
+		SELECT 
+		       server_ip,sum(counts) as counts 
 		  FROM ods_nginx_tourism 
 	     WHERE app_name =#{appName} AND req_date=#{reqDate} 
 	     GROUP BY server_ip
 	</select>
+	
+	<select id="findserverIPByAppName" resultType="String">
+		SELECT 
+		       server_ip 
+		  FROM ods_nginx_tourism 
+	     WHERE app_name =#{appName} AND req_date=#{reqDate} 
+	     GROUP BY server_ip
+	</select>
+	
+	
+	<select id="findListByserverIPAndReqTime" resultType="OdsNginxTourism">
+		SELECT 
+		     server_ip, concat(#{reqDate},' ',time_point) as req_time,if(b.counts is null,0,b.counts) as counts 
+		FROM (SELECT time_point FROM time_point WHERE sec%600=0) a 
+		left join (SELECT server_ip,req_time,sum(counts) as counts FROM ods_nginx_tourism  WHERE app_name =#{appName} AND req_date=#{reqDate} AND server_ip = #{serverIp}   
+		<if test="httpStatus !=null and httpStatus != ''">
+				AND http_status >= 400
+		</if>
+		GROUP BY server_ip,req_time) b 
+		on a.time_point=substr(req_time,12,5)
+		order by req_time
+	</select>
+	
 	
 	<select id="findAppList" resultType="String">
 		SELECT 

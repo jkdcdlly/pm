@@ -28,10 +28,8 @@
 	</form:form>
 	
 	  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-	  <div style="width:1400px;">
-    	<div id="main" style="width:700px;height:400px;display:inline;float:left"></div>
-    	<div id="main2" style="width:700px;height:400px;float:right;"></div>
-    	</div>
+    	<div id="main" style="height:300px;"></div>
+    	<div id="main2" style="height:300px;"></div>
     <script src="${ctxStatic}/chart/chart.js" type="text/javascript"></script>
      <!-- ECharts单文件引入 -->
     <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
@@ -62,7 +60,7 @@
                 	        trigger: 'item',
                 	        formatter : function (params) {
                 	            var date = new Date(params.value[0]);
-                	            return timeToString(date) + '<br/>' + params.value[1] 
+                	            return params.value[2] + '<br/>' + timeToString(params.value[0]) + "\t 访问量" + params.value[1]
                 	        }
                 	    },
                 	    toolbox: {
@@ -104,7 +102,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_b2b",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_b2b"]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart.setOption(option); 	
@@ -121,7 +119,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism"]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart.setOption(option); 	
@@ -138,7 +136,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_crm",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_crm"]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart.setOption(option); 	
@@ -180,7 +178,7 @@
                 	        trigger: 'item',
                 	        formatter : function (params) {
                 	            var date = new Date(params.value[0]);
-                	            return timeToString(date) + '<br/>' + params.value[1] 
+                	            return params.value[2] + '<br/>' + timeToString(params.value[0]) + "\t 错误访问量" + params.value[1]
                 	        }
                 	    },
                 	    toolbox: {
@@ -222,7 +220,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_b2b&httpStatus=400",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_b2b"]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart2.setOption(option2); 	
@@ -239,7 +237,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism&httpStatus=400",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism"]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart2.setOption(option2);
@@ -256,7 +254,7 @@
 					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_crm&httpStatus=400",
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
-					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts]);	
+					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_crm"]);	
 					                 						}
 					                 					// 为echarts对象加载数据 
 					                 					myChart2.setOption(option2);
