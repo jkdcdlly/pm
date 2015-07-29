@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.oa.entity;
 
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -118,6 +121,9 @@ public class OdsNginxTourism extends DataEntity<OdsNginxTourism> {
 	}
 
 	public String getBeginDate() {
+		if (StringUtils.isBlank(beginDate)) {
+			beginDate = DateUtils.getDate();
+		}
 		return beginDate;
 	}
 
@@ -126,6 +132,9 @@ public class OdsNginxTourism extends DataEntity<OdsNginxTourism> {
 	}
 
 	public String getEndDate() {
+		if (StringUtils.isBlank(endDate)) {
+			endDate = DateUtils.getDate();
+		}
 		return endDate;
 	}
 

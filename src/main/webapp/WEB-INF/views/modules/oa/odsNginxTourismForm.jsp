@@ -18,17 +18,12 @@
 		<form:select path="appName" class="input-medium">
 			<form:options items="${appNameList}" /> 
 		</form:select>
-		
-		<label>日期：</label> <input id="beginDate" name="beginDate"
-			type="text" readonly="readonly" maxlength="20"
-			class="input-medium Wdate" style="width: 163px;"
-			value="<fmt:formatDate value="${act.beginDate}" pattern="yyyy-MM-dd"/>"
-			onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> -- <input
-			id="endDate" name="endDate" type="text" readonly="readonly"
-			maxlength="20" class="input-medium Wdate" style="width: 163px;"
-			value="<fmt:formatDate value="${act.endDate}" pattern="yyyy-MM-dd"/>"
-			onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> &nbsp;<input
-			id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
+		<label>日期：</label> 
+		<input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate" style="width: 163px;" value="${ods.beginDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> 
+		-- 
+		<input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate" style="width: 163px;" value="${ods.endDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> 
+		&nbsp;
+		<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
 	</div>
 </form:form>
 
@@ -61,8 +56,7 @@
 			$.getJSON("findListByserverIP?reqDate=2015-06-30&appName="
 					+ $("select[name=appName]").val(), function(data) {
 				// 基于准备好的dom，初始化echarts图表
-				var myChart = ec.init(document.getElementById('piemain'),
-						'macarons');
+				var myChart = ec.init(document.getElementById('piemain'),'macarons');
 				option = {
 					title : {
 						text : $("select[name=appName]").val(),
@@ -152,9 +146,7 @@
 			var series = [];
 			var keys = [];
 			$
-					.getJSON(
-							"findListByserverIPAndReqTime?reqDate=2015-06-30&appName="
-									+ $("select[name=appName]").val(),
+					.getJSON("findListByserverIPAndReqTime?reqDate=2015-06-30&appName="+ $("select[name=appName]").val(),
 							function(data) {
 								$
 										.each(
@@ -258,9 +250,7 @@
 			var series = [];
 			var keys = [];
 			$
-					.getJSON(
-							"findListByserverIPAndReqTime?reqDate=2015-06-30&httpStatus=400&appName="
-									+ $("select[name=appName]").val(),
+					.getJSON("findListByserverIPAndReqTime?reqDate=2015-06-30&httpStatus=400&appName="+ $("select[name=appName]").val(),
 							function(data) {
 								$
 										.each(

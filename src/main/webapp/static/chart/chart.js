@@ -23,6 +23,7 @@ function timeToString(date) {
 
 
 function stringToTime(timeStr){
+	if(timeStr.length==19){
 	var datearr = timeStr.split(' ')[0].split('-');
 	var timearr = timeStr.split(' ')[1].split(':');
 	var d = new Date();
@@ -33,6 +34,7 @@ function stringToTime(timeStr){
 	d.setMinutes(parseInt(timearr[1]));
 	d.setSeconds(0);
 	return d;
+	}
 }
 
 function page(n, s) {

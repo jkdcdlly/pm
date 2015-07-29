@@ -1,10 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>旅游项目管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
+<title>旅游项目管理</title>
+<meta name="decorator" content="default" />
+<script type="text/javascript">
 // 	$(document).ready(function() {
 // 		function requireConfig(){
 // 		  require.config({
@@ -25,28 +25,34 @@
 // 	});
 	</script>
 <style type="text/css">
-#body div{ float:left; width:30%; height:100px; border:#F00 1px solid;}
+#body div {
+	float: left;
+	width: 30%;
+	height: 100px;
+	border: #F00 1px solid;
+}
 </style>
 </head>
 
 <body>
-<form:form id="searchForm" modelAttribute="odsNginxTourism" action="${ctx}/oa/odsNginxTourism/list" method="post" class="breadcrumb form-search">
-	<div>
-		<label>日期：</label> 
-		<input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate" style="width: 163px;" value="<fmt:formatDate value="${act.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> 
-		-- 
-		<input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate" style="width: 163px;" value="<fmt:formatDate value="${act.endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> 
-		&nbsp;
-		<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
-	</div>
-</form:form>	
-	  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    	<div id="main" style="height:300px;"></div>
-    	<div id="main2" style="height:300px;"></div>
-    <script src="${ctxStatic}/chart/chart.js" type="text/javascript"></script>
-     <!-- ECharts单文件引入 -->
-    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
-    <script type="text/javascript">
+	<form:form id="searchForm" modelAttribute="odsNginxTourism"
+		action="${ctx}/oa/odsNginxTourism/list" method="post"
+		class="breadcrumb form-search">
+		<div>
+			<label>日期：</label> <input id="reqDate" name="reqDate" type="text"
+				readonly="readonly" maxlength="20" class="input-medium Wdate"
+				style="width: 163px;" value="${ods.reqDate}"
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> &nbsp; <input
+				id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
+		</div>
+	</form:form>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+	<div id="main" style="height: 300px;"></div>
+	<div id="main2" style="height: 300px;"></div>
+	<script src="${ctxStatic}/chart/chart.js" type="text/javascript"></script>
+	<!-- ECharts单文件引入 -->
+	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+	<script type="text/javascript">
         // 路径配置
         require.config({
             paths: {
@@ -112,7 +118,8 @@
 					                     showAllSymbol: true,
 					                     data:(function(){
 					                 		var arr=[];
-					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_b2b",
+					                 		var url="findListByApp?appName=tourism_b2b&reqDate=" + $("input[name=reqDate]").val();
+					                 		$.getJSON(url,
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
 					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_b2b"]);	
@@ -129,7 +136,8 @@
 					                     showAllSymbol: true,
 					                     data:(function(){
 					                 		var arr=[];
-					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism",
+					                 		var url="findListByApp?appName=tourism&reqDate=" + $("input[name=reqDate]").val();
+					                 		$.getJSON(url,
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
 					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism"]);	
@@ -146,7 +154,8 @@
 					                     showAllSymbol: true,
 					                     data:(function(){
 					                 		var arr=[];
-					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_crm",
+					                 		var url="findListByApp?appName=tourism_crm&reqDate=" + $("input[name=reqDate]").val();
+					                 		$.getJSON(url,
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
 					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_crm"]);	
@@ -163,8 +172,8 @@
             	
             }
     </script>
-    
-    <script type="text/javascript">
+
+	<script type="text/javascript">
         // 路径配置
         require.config({
             paths: {
@@ -230,7 +239,8 @@
 					                     showAllSymbol: true,
 					                     data:(function(){
 					                 		var arr=[];
-					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_b2b&httpStatus=400",
+					                 		var url="findListByApp?appName=tourism_b2b&httpStatus=400&reqDate=" + $("input[name=reqDate]").val();
+					                 		$.getJSON(url,
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
 					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_b2b"]);	
@@ -247,7 +257,8 @@
 					                     showAllSymbol: true,
 					                     data:(function(){
 					                 		var arr=[];
-					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism&httpStatus=400",
+					                 		var url="findListByApp?appName=tourism&httpStatus=400&reqDate=" + $("input[name=reqDate]").val();
+					                 		$.getJSON(url,
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
 					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism"]);	
@@ -264,7 +275,8 @@
 					                     showAllSymbol: true,
 					                     data:(function(){
 					                 		var arr=[];
-					                 		$.getJSON("findListByApp?reqDate=2015-06-30&appName=tourism_crm&httpStatus=400",
+					                 		var url="findListByApp?appName=tourism_crm&httpStatus=400&reqDate=" + $("input[name=reqDate]").val();
+					                 		$.getJSON(url,
 					                 				function(data) {
 					                 					for (var i = 0; i < data.length; i++) {
 					                 						     arr.push([stringToTime(data[i].reqTime),data[i].counts,"tourism_crm"]);	

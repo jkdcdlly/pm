@@ -51,35 +51,24 @@ public class OdsNginxTourismController extends BaseController {
 	@RequiresPermissions("oa:odsNginxTourism:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(OdsNginxTourism odsNginxTourism, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if (StringUtils.isBlank(odsNginxTourism.getBeginDate()) && StringUtils.isBlank(odsNginxTourism.getEndDate())) {
-			odsNginxTourism.setBeginDate("2015-06-30" + "00:00:00");
-			odsNginxTourism.setEndDate("2015-06-30" + "23:59:59");
-		}
-		model.addAttribute("odsNginxTourism", odsNginxTourism);
+		model.addAttribute("appNameList", odsNginxTourismService.findAppList(odsNginxTourism));
+		model.addAttribute("ods", odsNginxTourism);
 		return "modules/oa/odsNginxTourismList";
 	}
 
 	@RequiresPermissions("oa:odsNginxTourism:view")
 	@RequestMapping(value = "form")
 	public String form(OdsNginxTourism odsNginxTourism, Model model) {
-		if (StringUtils.isBlank(odsNginxTourism.getBeginDate()) && StringUtils.isBlank(odsNginxTourism.getEndDate())) {
-			odsNginxTourism.setBeginDate("2015-06-30" + "00:00:00");
-			odsNginxTourism.setEndDate("2015-06-30" + "23:59:59");
-		}
 		model.addAttribute("appNameList", odsNginxTourismService.findAppList(odsNginxTourism));
-		model.addAttribute("odsNginxTourism", odsNginxTourism);
+		model.addAttribute("ods", odsNginxTourism);
 		return "modules/oa/odsNginxTourismForm";
 	}
 
 	@RequiresPermissions("oa:odsNginxTourism:view")
 	@RequestMapping(value = "history")
 	public String history(OdsNginxTourism odsNginxTourism, Model model) {
-		if (StringUtils.isBlank(odsNginxTourism.getBeginDate()) && StringUtils.isBlank(odsNginxTourism.getEndDate())) {
-			odsNginxTourism.setBeginDate("2015-06-30" + "00:00:00");
-			odsNginxTourism.setEndDate("2015-06-30" + "23:59:59");
-		}
 		model.addAttribute("appNameList", odsNginxTourismService.findAppList(odsNginxTourism));
-		model.addAttribute("odsNginxTourism", odsNginxTourism);
+		model.addAttribute("ods", odsNginxTourism);
 		return "modules/oa/odsNginxTourismHistory";
 	}
 
@@ -87,8 +76,8 @@ public class OdsNginxTourismController extends BaseController {
 	@RequiresPermissions("oa:odsNginxTourism:view")
 	@RequestMapping(value = { "findListByApp", "" })
 	@ResponseBody
-	public List<OdsNginxTourism> findListByApp(OdsNginxTourism odsNginxTourism, HttpServletRequest request, HttpServletResponse response, Model model) {
-		return odsNginxTourismService.findListByApp(odsNginxTourism);
+	public Map<String, List<OdsNginxTourism>> findListByApp(OdsNginxTourism odsNginxTourism, HttpServletRequest request, HttpServletResponse response, Model model) {
+		return odsNginxTourismService.findMapAllApp(odsNginxTourism);
 	}
 
 	@RequiresPermissions("oa:odsNginxTourism:view")

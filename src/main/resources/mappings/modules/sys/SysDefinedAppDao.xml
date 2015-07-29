@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.SysDefinedAppDao">
+    
+	<sql id="sysDefinedAppColumns">
+		a.id,
+		a.app_type AS "appType",
+		a.app_name AS "appName"
+	</sql>
+	
+	<sql id="sysDefinedAppJoins">
+	</sql>
+    
+	<select id="get" resultType="SysDefinedApp">
+		SELECT 
+			<include refid="sysDefinedAppColumns"/>
+		FROM sys_defined_app a
+		<include refid="sysDefinedAppJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysDefinedApp">
+		SELECT 
+			<include refid="sysDefinedAppColumns"/>
+		FROM sys_defined_app a
+		<include refid="sysDefinedAppJoins"/>
+		<where>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysDefinedApp">
+		SELECT 
+			<include refid="sysDefinedAppColumns"/>
+		FROM sys_defined_app a
+		<include refid="sysDefinedAppJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_defined_app(
+			app_type,
+			app_name
+		) VALUES (
+			#{appType},
+			#{appName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_defined_app SET 	
+			app_type = #{appType},
+			app_name = #{appName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sys_defined_app
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

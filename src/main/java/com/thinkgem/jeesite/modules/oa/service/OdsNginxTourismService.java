@@ -54,6 +54,16 @@ public class OdsNginxTourismService extends CrudService<OdsNginxTourismDao, OdsN
 		return odsNginxTourismDao.findListByApp(odsNginxTourism);
 	}
 
+	public Map<String, List<OdsNginxTourism>> findMapAllApp(OdsNginxTourism odsNginxTourism) {
+		Map<String, List<OdsNginxTourism>> map = new HashMap<String, List<OdsNginxTourism>>();
+		List<String> appNames = odsNginxTourismDao.findAppList(odsNginxTourism);
+		for (String appName : appNames) {
+			odsNginxTourism.setAppName(appName);
+			map.put(appName, odsNginxTourismDao.findListByApp(odsNginxTourism));
+		}
+		return map;
+	}
+
 	public List<String> findAppList(OdsNginxTourism odsNginxTourism) {
 		return odsNginxTourismDao.findAppList(odsNginxTourism);
 	}
