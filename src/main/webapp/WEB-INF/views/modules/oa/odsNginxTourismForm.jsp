@@ -12,26 +12,25 @@
 </head>
 
 <body>
-	<form:form id="searchForm" modelAttribute="odsNginxTourism"
-		action="${ctx}/oa/odsNginxTourism/form" method="post"
-		class="breadcrumb form-search">
-		<ul class="ul-form">
-			<li><label class="control-label">应用名：</label> <select
-				name="appName" style="width: 150px">
-					<c:forEach items="${appNameList}" var="appName" varStatus="vs">
-						<c:if test="${appName==odsNginxTourism.appName}">
-							<option value="${appName}" selected>${appName}</option>
-						</c:if>
-						<c:if test="${appName!=odsNginxTourism.appName}">
-							<option value="${appName}">${appName}</option>
-						</c:if>
-					</c:forEach>
-			</select></li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
-				type="submit" value="查询" /></li>
-			<li class="clearfix"></li>
-		</ul>
-	</form:form>
+<form:form id="searchForm" modelAttribute="odsNginxTourism" action="${ctx}/oa/odsNginxTourism/form" method="post" class="breadcrumb form-search">
+	<div>
+		<label>应用名称：&nbsp;</label>
+		<form:select path="appName" class="input-medium">
+			<form:options items="${appNameList}" /> 
+		</form:select>
+		
+		<label>日期：</label> <input id="beginDate" name="beginDate"
+			type="text" readonly="readonly" maxlength="20"
+			class="input-medium Wdate" style="width: 163px;"
+			value="<fmt:formatDate value="${act.beginDate}" pattern="yyyy-MM-dd"/>"
+			onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> -- <input
+			id="endDate" name="endDate" type="text" readonly="readonly"
+			maxlength="20" class="input-medium Wdate" style="width: 163px;"
+			value="<fmt:formatDate value="${act.endDate}" pattern="yyyy-MM-dd"/>"
+			onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> &nbsp;<input
+			id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
+	</div>
+</form:form>
 
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 	<div id="piemain"

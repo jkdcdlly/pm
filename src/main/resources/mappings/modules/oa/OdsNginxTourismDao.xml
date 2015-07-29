@@ -92,7 +92,7 @@
 		      app_name
 		 FROM ods_nginx_tourism 
 		WHERE 
-		      req_date=#{reqDate}
+		      req_date BETWEEN #{beginDate} AND #{endDate}
 		GROUP BY app_name
 	</select>
 	

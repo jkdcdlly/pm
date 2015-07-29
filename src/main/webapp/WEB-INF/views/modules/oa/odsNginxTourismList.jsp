@@ -5,14 +5,24 @@
 	<title>旅游项目管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
-		});
-		function page(n,s){
-			$("#pageNo").val(n);
-			$("#pageSize").val(s);
-			$("#searchForm").submit();
-        	return false;
-        }
+// 	$(document).ready(function() {
+// 		function requireConfig(){
+// 		  require.config({
+// 						paths: {
+// 								echarts: 'http://echarts.baidu.com/build/dist'
+// 								}
+// 						});
+// 	        require(
+// 	                [
+// 	                    'echarts',
+// 	                    'echarts/chart/line' //按需加载图表关于线性图、折线图的部分
+// 	                ],
+// 	                DrawEChart
+// 	                );
+// 		}
+//         requireConfig();
+// 		setInterval( requireConfig , 1000 * 60); 
+// 	});
 	</script>
 <style type="text/css">
 #body div{ float:left; width:30%; height:100px; border:#F00 1px solid;}
@@ -20,13 +30,16 @@
 </head>
 
 <body>
-	<form:form id="searchForm" modelAttribute="odsNginxTourism" action="${ctx}/oa/odsNginxTourism/list" method="post" class="breadcrumb form-search">
-		<ul class="ul-form">
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
-			<li class="clearfix"></li>
-		</ul>
-	</form:form>
-	
+<form:form id="searchForm" modelAttribute="odsNginxTourism" action="${ctx}/oa/odsNginxTourism/list" method="post" class="breadcrumb form-search">
+	<div>
+		<label>日期：</label> 
+		<input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate" style="width: 163px;" value="<fmt:formatDate value="${act.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> 
+		-- 
+		<input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate" style="width: 163px;" value="<fmt:formatDate value="${act.endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" /> 
+		&nbsp;
+		<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
+	</div>
+</form:form>	
 	  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     	<div id="main" style="height:300px;"></div>
     	<div id="main2" style="height:300px;"></div>
